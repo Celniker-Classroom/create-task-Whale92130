@@ -1,1 +1,8 @@
-/* Add Global styles here */
+.table {
+    display: flex;
+    flex-direction: column;
+}
+.labels {
+    display: flex;
+    flex-direction: row;
+}
