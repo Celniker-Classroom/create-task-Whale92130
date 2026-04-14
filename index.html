@@ -21,45 +21,39 @@ into the aeries gradebook
         <h1>Grade Calculator</h1>
     </div>
     <div id="main">
-        <button>Import from Aeries</button>
+        <button id="importAeries">Import from Aeries</button>
         <h2>Categorys</h2>
         <div class="table">
-            <div class="labels">
-                <p>Category</p>
-                <p>Your Points</p>
-                <p>Total Points</p>
-                <p>Weight</p>
-            </div>
         <div class="category">
             <input placeholder="Category Name" type="text" value="Homework">
-            <input placeholder="Your Points" type="text">
-            <input placeholder="Total Points" type="text">
+            <input placeholder="Your Points" type="number">
+            <input placeholder="Total Points" type="number">
             <input placeholder="Weight%" type="number">
-            <button>Add Assignment</button>
-            <button>Delete Category</button>
+            <button class="addAssignment">Add Assignment</button>
+            <button class="deleteCategory">Delete</button>
         </div>
         <div class="category">
             <input placeholder="Category Name" type="text" value="Assessments">
-            <input placeholder="Your Points" type="text">
-            <input placeholder="Total Points" type="text">
+            <input placeholder="Your Points" type="number">
+            <input placeholder="Total Points" type="number">
             <input placeholder="Weight%" type="number">
-            <button>Add Assignment</button>
-            <button>Delete Category</button>
+            <button class="addAssignment">Add Assignment</button>
+            <button class="deleteCategory">Delete</button>
         </div>
                 <div class="category">
             <input placeholder="Category Name" type="text" value="Final">
-            <input placeholder="Your Points" type="text">
-            <input placeholder="Total Points" type="text">
+            <input placeholder="Your Points" type="number">
+            <input placeholder="Total Points" type="number">
             <input placeholder="Weight%" type="number">
-            <button>Add Assignment</button>
-            <button>Delete Category</button>
+            <button class="addAssignment">Add Assignment</button>
+            <button class="deleteCategory">Delete</button>
         </div>
         </div>
         <br>
-        <button>Add Category</button>
+        <button id="addCategory">Add Category</button>
         <br>
         <h2>Desired Final Grade</h2>
-        <input placeholder="A,B,C or a percentage">
+        <input id="desiredFinalGrade" placeholder="A,B,C or a percentage">
         <div id="outputs">
             <h3>Added Assignments</h3>
             <ul>
