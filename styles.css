@@ -57,7 +57,6 @@ h3 {
     gap: 1rem;
 }
 
-/* Unified grid for perfect alignment between labels and inputs */
 .category-grid {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr 150px 90px;
@@ -66,14 +65,68 @@ h3 {
     width: 100%;
 }
 
-/* Label specific styling */
-.category-labels {
+.category {
+    border: 1px solid #11402c;
+    border-radius: 22px;
+    padding: 1rem;
+    background: rgba(6, 19, 12, 0.85);
+    display: grid;
+    gap: 1rem;
+}
+
+.assignments {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.assignment-grid,
+.assignment-row {
+    display: grid;
+    grid-template-columns: 2fr 110px 110px 1fr 140px;
+    gap: 0.75rem;
+    align-items: center;
+    width: 100%;
+}
+
+.assignment-labels {
     font-weight: bold;
-    margin-bottom: -5px; /* Pulls the labels closer to the inputs */
+    color: #98efb2;
+    padding-left: 1.2rem;
+}
+
+.assignment-list {
+    display: grid;
+    gap: 0.6rem;
+}
+
+.assignment-row {
+    padding: 0.8rem 0.9rem;
+    border-radius: 16px;
+    background: rgba(10, 21, 16, 0.95);
+    border: 1px solid #0f3a2a;
+    margin-left: 1.2rem;
+}
+
+.assignment-row span,
+.assignment-row .assignment-actions {
+    color: #e9fbef;
+}
+
+.assignment-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.assignment-actions button {
+    width: auto;
+    min-width: 80px;
+    padding: 0.65rem 0.8rem;
+    border-radius: 12px;
 }
 
 .category-labels span {
-    padding-left: 0.9rem; /* Aligns text with the inside of the input boxes */
+    padding-left: 0.9rem;
 }
 
 .category input,
@@ -113,7 +166,6 @@ button {
     transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
-/* Overriding the button width specifically for the grid to prevent them from sticking out */
 .category button {
     min-width: 0; 
     width: 100%;
@@ -173,7 +225,6 @@ p {
     width: fit-content;
 }
 
-/* Moved dialog inline styling to CSS */
 .dialog-overlay {
     position: fixed;
     top: 50%;
