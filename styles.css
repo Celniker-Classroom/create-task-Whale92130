@@ -10,7 +10,7 @@ body {
     font-family: Inter, system-ui, sans-serif;
 }
 
-body, input, button, select, textarea {
+body, input, button {
     color: #e9fbef;
 }
 
@@ -36,19 +36,9 @@ body, input, button, select, textarea {
     text-shadow: 0 0 18px rgba(138, 245, 194, 0.35);
 }
 
-h2,
-h3 {
+h2 {
     color: #b3f8d4;
     margin-bottom: 10px;
-}
-
-#outputs h3 {
-    margin-top: 0px;
-}
-
-#outputs p {
-    margin-top: 5px;
-    margin-bottom: 5px;
 }
 
 .table {
@@ -57,79 +47,26 @@ h3 {
     gap: 1rem;
 }
 
+.category {
+    border-radius: 22px;
+    padding: 0.2rem;
+    background: rgba(6, 19, 12, 0.85);
+}
+
 .category-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 150px 90px;
+    grid-template-columns: 2fr 1fr 1fr 1fr 110px;
     gap: 0.75rem;
     align-items: center;
     width: 100%;
-}
-
-.category {
-    border: 1px solid #11402c;
-    border-radius: 22px;
-    padding: 1rem;
-    background: rgba(6, 19, 12, 0.85);
-    display: grid;
-    gap: 1rem;
-}
-
-.assignments {
-    display: grid;
-    gap: 0.5rem;
-}
-
-.assignment-grid,
-.assignment-row {
-    display: grid;
-    grid-template-columns: 2fr 110px 110px 1fr 140px;
-    gap: 0.75rem;
-    align-items: center;
-    width: 100%;
-}
-
-.assignment-labels {
-    font-weight: bold;
-    color: #98efb2;
-    padding-left: 1.2rem;
-}
-
-.assignment-list {
-    display: grid;
-    gap: 0.6rem;
-}
-
-.assignment-row {
-    padding: 0.8rem 0.9rem;
-    border-radius: 16px;
-    background: rgba(10, 21, 16, 0.95);
-    border: 1px solid #0f3a2a;
-    margin-left: 1.2rem;
-}
-
-.assignment-row span,
-.assignment-row .assignment-actions {
-    color: #e9fbef;
-}
-
-.assignment-actions {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
-}
-
-.assignment-actions button {
-    width: auto;
-    min-width: 80px;
-    padding: 0.65rem 0.8rem;
-    border-radius: 12px;
 }
 
 .category-labels span {
     padding-left: 0.9rem;
+    font-weight: bold;
+    color: #98efb2;
 }
 
-.category input,
 input {
     width: 100%;
     padding: 0.8rem 0.9rem;
@@ -140,14 +77,14 @@ input {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.category input:focus,
 input:focus {
     border-color: #2ddfa2;
     box-shadow: 0 0 0 4px rgba(45, 223, 162, 0.14);
 }
 
-#desiredFinalGrade {
-    margin-bottom: 0.75rem;
+input::placeholder {
+    color: #75b58a;
+    opacity: 1;
 }
 
 button {
@@ -167,8 +104,8 @@ button {
 }
 
 .category button {
-    min-width: 0; 
     width: 100%;
+    min-width: 0;
     padding: 0.8rem 0.5rem;
     font-size: 0.9rem;
 }
@@ -185,83 +122,12 @@ button:active {
     background: linear-gradient(145deg, #073622, #0a553f);
 }
 
-input::placeholder {
-    color: #75b58a;
-    opacity: 1;
-}
-
-#outputs {
-    padding: 1.2rem;
-    border: 1px solid #143d28;
-    border-radius: 20px;
-    background: rgba(10, 23, 17, 0.94);
-}
-
-#outputs ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-#outputs li {
-    background: #08140f;
-    border: 1px solid #11402c;
-    border-radius: 18px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-}
-
-p {
-    margin: 0;
-}
-
 .total-grade-display {
     margin-top: 20px;
     font-size: 1.5rem;
     font-weight: bold;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
     padding: 15px;
     border-radius: 8px;
     width: fit-content;
-}
-
-.dialog-overlay {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #07120d;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    z-index: 1000;
-    border-radius: 10px;
-    border: 1px solid #14402a;
-}
-
-.dialog-overlay img {
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 10px;
-}
-
-.dialog-overlay textarea {
-    width: 100%;
-    height: 100px;
-    color: #fff;
-    background-color: #0a1a13;
-    border: 1px solid #18523b;
-    padding: 10px;
-    border-radius: 8px;
-    resize: vertical;
-    outline: none;
-}
-
-.dialog-overlay textarea:focus {
-    border-color: #2ddfa2;
-}
-
-.dialog-buttons {
-    margin-top: 15px;
-    display: flex;
-    gap: 10px;
 }

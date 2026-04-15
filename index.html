@@ -1,109 +1,66 @@
-<!-- 
-My grade calculator will have the ability to add categories with custom grade weights
-You will be able to add assignments into each category with custom point values, 
-or be able to solve for it
-It will also have a button to quickly import your current grade from Aeries
-The categories will be in a table
-The assignments you add will be listed at the bottom with options to edit them
-The import from Aeries button will prompt the user on how to copy and paste the table
-into the aeries gradebook
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grade Calculator</title>
-    <script src="script.js" defer></script>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div id="heading">
         <h1>Grade Calculator</h1>
     </div>
+
     <div id="main">
-        <button id="importAeries">Import from Aeries</button>
         <h2>Categories</h2>
-        
+
         <div class="table">
             <div class="category-grid category-labels">
                 <span>Category</span>
                 <span>Your Points</span>
                 <span>Total Points</span>
                 <span>Weight</span>
-                <span></span> <span></span>
+                <span></span>
             </div>
 
             <div class="category">
                 <div class="category-grid">
-                    <input placeholder="Category Name" type="text" value="Homework">
-                    <input placeholder="Your Points" type="number" class="calc-input">
-                    <input placeholder="Total Points" type="number" class="calc-input">
-                    <input placeholder="Weight" type="text" class="weight-input">
-                    <button class="addAssignment">Add Assignment</button>
+                    <input type="text" placeholder="Category Name" value="Homework">
+                    <input type="number" placeholder="Your Points">
+                    <input type="number" placeholder="Total Points">
+                    <input type="text" placeholder="Weight" class="weight-input">
                     <button class="deleteCategory">Delete</button>
-                </div>
-                <div class="assignments">
-                    <div class="assignment-grid assignment-labels">
-                        <span>Assignments</span>
-                        <span>Your Score</span>
-                        <span>Total Points</span>
-                        <span>Needed</span>
-                        <span></span>
-                    </div>
-                    <div class="assignment-list"></div>
                 </div>
             </div>
+
             <div class="category">
                 <div class="category-grid">
-                    <input placeholder="Category Name" type="text" value="Assessments">
-                    <input placeholder="Your Points" type="number" class="calc-input">
-                    <input placeholder="Total Points" type="number" class="calc-input">
-                    <input placeholder="Weight" type="text" class="weight-input">
-                    <button class="addAssignment">Add Assignment</button>
+                    <input type="text" placeholder="Category Name" value="Assessments">
+                    <input type="number" placeholder="Your Points">
+                    <input type="number" placeholder="Total Points">
+                    <input type="text" placeholder="Weight" class="weight-input">
                     <button class="deleteCategory">Delete</button>
-                </div>
-                <div class="assignments">
-                    <div class="assignment-grid assignment-labels">
-                        <span>Assignments</span>
-                        <span>Your Score</span>
-                        <span>Total Points</span>
-                        <span>Needed</span>
-                        <span></span>
-                    </div>
-                    <div class="assignment-list"></div>
                 </div>
             </div>
+
             <div class="category">
                 <div class="category-grid">
-                    <input placeholder="Category Name" type="text" value="Final">
-                    <input placeholder="Your Points" type="number" class="calc-input">
-                    <input placeholder="Total Points" type="number" class="calc-input">
-                    <input placeholder="Weight" type="text" class="weight-input">
-                    <button class="addAssignment">Add Assignment</button>
+                    <input type="text" placeholder="Category Name" value="Final">
+                    <input type="number" placeholder="Your Points">
+                    <input type="number" placeholder="Total Points">
+                    <input type="text" placeholder="Weight" class="weight-input">
                     <button class="deleteCategory">Delete</button>
-                </div>
-                <div class="assignments">
-                    <div class="assignment-grid assignment-labels">
-                        <span>Assignments</span>
-                        <span>Your Score</span>
-                        <span>Total Points</span>
-                        <span>Needed</span>
-                        <span></span>
-                    </div>
-                    <div class="assignment-list"></div>
                 </div>
             </div>
         </div>
+
         <br>
         <button id="addCategory">Add Category</button>
-        
+
         <div id="totalGradeDisplay" class="total-grade-display">
             Total Grade: <span id="totalPercentage">0.00%</span> <span id="totalLetter"></span>
         </div>
-
-        <br>
-        <h2>Desired Final Grade</h2>
-        <input id="desiredFinalGrade" placeholder="A, B, C or a percentage">
     </div>
 </body>
 </html>
