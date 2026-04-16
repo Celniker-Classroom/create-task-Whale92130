@@ -3,17 +3,16 @@ const tableDiv = document.querySelector('.table');
 const totalPercentageDisplay = document.getElementById('totalPercentage');
 const totalLetterDisplay = document.getElementById('totalLetter');
 
-function initialize() {
-    document.querySelectorAll('.category').forEach(initCategory);
+document.querySelectorAll('.category').forEach(initCategory);
 
-    addCategoryButton.addEventListener('click', () => {
-        const newCategory = buildCategory();
-        tableDiv.appendChild(newCategory);
-        calculateTotalGrade();
-    });
-
+addCategoryButton.addEventListener('click', () => {
+    const newCategory = buildCategory();
+    tableDiv.appendChild(newCategory);
     calculateTotalGrade();
-}
+});
+
+calculateTotalGrade();
+
 
 function initCategory(categoryDiv) {
     const deleteButton = categoryDiv.querySelector('.deleteCategory');
@@ -103,5 +102,3 @@ function getLetterGrade(percent) {
     if (percent >= 60) return { letter: 'D', color: '#fb923c' };
     return { letter: 'F', color: '#f87171' };
 }
-
-initialize();
