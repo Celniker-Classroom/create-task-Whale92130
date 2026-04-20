@@ -72,14 +72,12 @@ function updateGradeData() {
         const points = parseFloat(inputs[1].value) || 0;
         const total = parseFloat(inputs[2].value) || 0;
         const weight = parseFloat(inputs[3].value.replace('%', '')) || 0;
-        //storing to list
         gradeCategories.push({
             points: points,
             total: total,
             weight: weight
         });
     });
-    //calling procedure
     const finalPercent = calculateFinalPercentage(gradeCategories);
 
     if (finalPercent === null) {
@@ -95,21 +93,17 @@ function updateGradeData() {
     }
 }
 
-//procedure
-function calculateFinalPercentage(categoryList) {
+function calculateFinalPercentage(gradeCategories) {
     let totalWeight = 0;
     let weightedScore = 0;
-    //Interation
-    for (let i = 0; i < categoryList.length; i++) {
-        let currentCategory = categoryList[i];
-        //Selection
+    for (let i = 0; i < gradeCategories.length; i++) {
+        let currentCategory = gradeCategories[i];
         if (currentCategory.total > 0 && currentCategory.weight > 0) {
             const categoryPercent = currentCategory.points / currentCategory.total;
             weightedScore += categoryPercent * currentCategory.weight;
             totalWeight += currentCategory.weight;
         }
     }
-    //Selection
     if (totalWeight === 0) {
         return null; 
     }
