@@ -3,23 +3,26 @@ const tableDiv = document.querySelector('.table');
 const totalPercentageDisplay = document.getElementById('totalPercentage');
 const totalLetterDisplay = document.getElementById('totalLetter');
 
+//list to hold all category data for calculations
+let gradeCategories = [];
+
 document.querySelectorAll('.category').forEach(initCategory);
 
 addCategoryButton.addEventListener('click', () => {
     const newCategory = buildCategory();
     tableDiv.appendChild(newCategory);
-    calculateTotalGrade();
+    updateGradeData();
 });
 
-calculateTotalGrade();
-
+updateGradeData();
 
 function initCategory(categoryDiv) {
     const deleteButton = categoryDiv.querySelector('.deleteCategory');
     const inputs = categoryDiv.querySelectorAll('input');
 
     inputs.forEach(input => {
-        input.addEventListener('input', calculateTotalGrade);
+        
+        input.addEventListener('input', updateGradeData);
     });
 
     const weightInput = categoryDiv.querySelector('.weight-input');
@@ -33,12 +36,12 @@ function initCategory(categoryDiv) {
         if (value !== '' && !isNaN(value)) {
             weightInput.value = value + '%';
         }
-        calculateTotalGrade();
+        updateGradeData();
     });
 
     deleteButton.addEventListener('click', () => {
         categoryDiv.remove();
-        calculateTotalGrade();
+        updateGradeData();
     });
 }
 
@@ -60,39 +63,58 @@ function buildCategory(name = '', points = '', total = '', weight = '') {
     return categoryDiv;
 }
 
-function calculateTotalGrade() {
-    const categories = document.querySelectorAll('.category');
-    let totalWeight = 0;
-    let weightedScore = 0;
+function updateGradeData() {
+    const categoryElements = document.querySelectorAll('.category');
+    gradeCategories = []; 
 
-    categories.forEach(category => {
+    categoryElements.forEach(category => {
         const inputs = category.querySelectorAll('input');
-
         const points = parseFloat(inputs[1].value) || 0;
         const total = parseFloat(inputs[2].value) || 0;
         const weight = parseFloat(inputs[3].value.replace('%', '')) || 0;
-
-        if (total > 0 && weight > 0) {
-            const categoryPercent = points / total;
-            weightedScore += categoryPercent * weight;
-            totalWeight += weight;
-        }
+        //storing to list
+        gradeCategories.push({
+            points: points,
+            total: total,
+            weight: weight
+        });
     });
+    //calling procedure
+    const finalPercent = calculateFinalPercentage(gradeCategories);
 
-    if (totalWeight === 0) {
+    if (finalPercent === null) {
         totalPercentageDisplay.textContent = '0.00%';
         totalLetterDisplay.textContent = '';
         totalPercentageDisplay.style.color = 'inherit';
-        return;
+    } else {
+        const gradeInfo = getLetterGrade(finalPercent);
+        totalPercentageDisplay.textContent = finalPercent.toFixed(2) + '%';
+        totalLetterDisplay.textContent = gradeInfo.letter;
+        totalPercentageDisplay.style.color = gradeInfo.color;
+        totalLetterDisplay.style.color = gradeInfo.color;
+    }
+}
+
+//procedure
+function calculateFinalPercentage(categoryList) {
+    let totalWeight = 0;
+    let weightedScore = 0;
+    //Interation
+    for (let i = 0; i < categoryList.length; i++) {
+        let currentCategory = categoryList[i];
+        //Selection
+        if (currentCategory.total > 0 && currentCategory.weight > 0) {
+            const categoryPercent = currentCategory.points / currentCategory.total;
+            weightedScore += categoryPercent * currentCategory.weight;
+            totalWeight += currentCategory.weight;
+        }
+    }
+    //Selection
+    if (totalWeight === 0) {
+        return null; 
     }
 
-    const finalPercent = (weightedScore / totalWeight) * 100;
-    const { letter, color } = getLetterGrade(finalPercent);
-
-    totalPercentageDisplay.textContent = finalPercent.toFixed(2) + '%';
-    totalLetterDisplay.textContent = letter;
-    totalPercentageDisplay.style.color = color;
-    totalLetterDisplay.style.color = color;
+    return (weightedScore / totalWeight) * 100;
 }
 
 function getLetterGrade(percent) {
