@@ -5,17 +5,21 @@ const totalLetterDisplay = document.getElementById('totalLetter');
 
 let gradeCategories = [];
 
-const modal = document.getElementById('assignmentModal');
-const closeBtn = document.querySelector('.close');
 let currentCategory = null;
+let categoryCounter = 4; // Since there are 3 default categories
 
-closeBtn.onclick = () => modal.style.display = 'none';
+const modal = document.getElementById('assignmentModal');
+const closeModal = document.querySelector('.close');
 
-window.onclick = (event) => {
-    if (event.target == modal) {
+closeModal.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+window.addEventListener('click', (event) => {
+    if (event.target === modal) {
         modal.style.display = 'none';
     }
-};
+});
 
 document.getElementById('addAssignmentConfirm').addEventListener('click', () => {
     const name = document.getElementById('assignmentName').value;
@@ -104,6 +108,10 @@ function initCategory(categoryDiv) {
     });
     addAssignmentButton.addEventListener('click', () => {
         currentCategory = categoryDiv;
+        // Clear modal inputs
+        document.getElementById('assignmentName').value = '';
+        document.getElementById('yourScore').value = '';
+        document.getElementById('totalPoints').value = '';
         modal.style.display = 'block';
     });
 }
@@ -113,7 +121,7 @@ function buildCategory() {
 
     categoryDiv.innerHTML = `
         <div class="category-grid">
-                    <input placeholder="Category Name" type="text" value="Homework">
+                    <input placeholder="Category Name" type="text" value="Category ${categoryCounter}">
                     <input placeholder="Your Points" type="number" class="calc-input">
                     <input placeholder="Total Points" type="number" class="calc-input">
                     <input placeholder="Weight" type="text" class="weight-input">
@@ -132,6 +140,7 @@ function buildCategory() {
                 </div>
     `;
 
+    categoryCounter++;
     initCategory(categoryDiv);
     return categoryDiv;
 }
@@ -155,12 +164,35 @@ function updateGradeData() {
             }
         });
         const inputs = category.querySelectorAll('input');
-        inputs[1].value = points;
-        inputs[2].value = total;
+        if (assignments.length > 0) {
+            // If there are assignments, add to manual totals
+            if (!category.dataset.manualTotal) {
+                // First time having assignments, store current inputs as manual
+                category.dataset.manualTotal = inputs[2].value;
+                category.dataset.manualPoints = inputs[1].value;
+            }
+            const manualTotal = parseFloat(category.dataset.manualTotal) || 0;
+            const manualPoints = parseFloat(category.dataset.manualPoints) || 0;
+            inputs[1].value = manualPoints + points;
+            inputs[2].value = manualTotal + total;
+            inputs[1].setAttribute('readonly', true);
+            inputs[2].setAttribute('readonly', true);
+        } else {
+            // No assignments, allow manual entry
+            inputs[1].removeAttribute('readonly');
+            inputs[2].removeAttribute('readonly');
+            // If there were stored manual values from before, restore them
+            if (category.dataset.manualTotal) {
+                inputs[1].value = category.dataset.manualPoints || '';
+                inputs[2].value = category.dataset.manualTotal || '';
+                delete category.dataset.manualTotal;
+                delete category.dataset.manualPoints;
+            }
+        }
         const weight = parseFloat(inputs[3].value.replace('%', '')) || 0;
         gradeCategories.push({
-            points: points,
-            total: total,
+            points: parseFloat(inputs[1].value) || 0,
+            total: parseFloat(inputs[2].value) || 0,
             weight: weight
         });
     });
