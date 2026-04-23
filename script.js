@@ -2,23 +2,49 @@ const addCategoryButton = document.getElementById('addCategory');
 const tableDiv = document.querySelector('.table');
 const totalPercentageDisplay = document.getElementById('totalPercentage');
 const totalLetterDisplay = document.getElementById('totalLetter');
+const importFromAeriesButton = document.getElementById('importAeries');
 
 let gradeCategories = [];
 
 let currentCategory = null;
-let categoryCounter = 4; // Since there are 3 default categories
+let categoryCounter = 4;
 
-const modal = document.getElementById('assignmentModal');
-const closeModal = document.querySelector('.close');
+const popup = document.getElementById('assignmentPopup');
+const closePopup = document.querySelector('.popup-close');
 
-closeModal.addEventListener('click', () => {
-    modal.style.display = 'none';
+closePopup.addEventListener('click', () => {
+    popup.style.display = 'none';
 });
 
 window.addEventListener('click', (event) => {
-    if (event.target === modal) {
-        modal.style.display = 'none';
+    if (event.target === popup) {
+        popup.style.display = 'none';
     }
+});
+
+importFromAeriesButton.addEventListener('click', () => {
+    const dialog = document.createElement('div');
+    dialog.classList.add('dialog-overlay');
+    dialog.innerHTML = `
+        <h2>Import from Aeries</h2>
+        <p>Copy and paste your Aeries grade table exactly as the example:</p>
+        <p>Example format:</p>
+        <img src="image/importExample.png" alt="Import Example">
+        <textarea id="aeriesTable" placeholder="Paste Here"></textarea>
+        <div class="dialog-buttons">
+            <button id="importButton">Import</button>
+            <button id="cancelButton">Cancel</button>
+        </div>
+    `;
+    document.body.appendChild(dialog);
+    document.getElementById('cancelButton').addEventListener('click', () => {
+        dialog.remove();
+    });
+    document.getElementById('importButton').addEventListener('click', () => {
+        const pastedText = document.getElementById('aeriesTable').value;
+        importAeriesCategories(pastedText);
+        dialog.remove();
+    });
 });
 
 document.getElementById('addAssignmentConfirm').addEventListener('click', () => {
@@ -38,7 +64,6 @@ document.getElementById('addAssignmentConfirm').addEventListener('click', () => 
     `;
     assignmentList.appendChild(newAssignment);
 
-    // add event listeners
     const inputs = newAssignment.querySelectorAll('input.calc-input');
     inputs.forEach(input => {
         input.addEventListener('input', updateGradeData);
@@ -50,16 +75,14 @@ document.getElementById('addAssignmentConfirm').addEventListener('click', () => 
     });
 
     if (yourScore === '') {
-        // calculate needed
         const needed = calculateNeededScore(currentCategory, parseFloat(totalPoints) || 0);
         newAssignment.querySelector('.needed-score').textContent = needed ? needed.toFixed(2) : '';
     }
 
-    // clear modal
     document.getElementById('assignmentName').value = '';
     document.getElementById('yourScore').value = '';
     document.getElementById('totalPoints').value = '';
-    modal.style.display = 'none';
+    popup.style.display = 'none';
     updateGradeData();
 });
 
@@ -84,7 +107,7 @@ function initCategory(categoryDiv) {
     const inputs = categoryDiv.querySelectorAll('input');
 
     inputs.forEach(input => {
-        
+
         input.addEventListener('input', updateGradeData);
     });
 
@@ -108,11 +131,10 @@ function initCategory(categoryDiv) {
     });
     addAssignmentButton.addEventListener('click', () => {
         currentCategory = categoryDiv;
-        // Clear modal inputs
         document.getElementById('assignmentName').value = '';
         document.getElementById('yourScore').value = '';
         document.getElementById('totalPoints').value = '';
-        modal.style.display = 'block';
+        popup.style.display = 'block';
     });
 }
 function buildCategory() {
@@ -147,7 +169,7 @@ function buildCategory() {
 
 function updateGradeData() {
     const categoryElements = document.querySelectorAll('.category');
-    gradeCategories = []; 
+    gradeCategories = [];
 
     categoryElements.forEach(category => {
         const assignmentList = category.querySelector('.assignment-list');
@@ -158,16 +180,16 @@ function updateGradeData() {
             const inputs = ass.querySelectorAll('input');
             const yourScore = parseFloat(inputs[1].value) || 0;
             const totalPoints = parseFloat(inputs[2].value) || 0;
-            if (inputs[1].value !== '') { // only if filled
+            if (inputs[1].value !== '') {
                 points += yourScore;
                 total += totalPoints;
             }
         });
         const inputs = category.querySelectorAll('input');
         if (assignments.length > 0) {
-            // If there are assignments, add to manual totals
+
             if (!category.dataset.manualTotal) {
-                // First time having assignments, store current inputs as manual
+
                 category.dataset.manualTotal = inputs[2].value;
                 category.dataset.manualPoints = inputs[1].value;
             }
@@ -178,10 +200,10 @@ function updateGradeData() {
             inputs[1].setAttribute('readonly', true);
             inputs[2].setAttribute('readonly', true);
         } else {
-            // No assignments, allow manual entry
+
             inputs[1].removeAttribute('readonly');
             inputs[2].removeAttribute('readonly');
-            // If there were stored manual values from before, restore them
+
             if (category.dataset.manualTotal) {
                 inputs[1].value = category.dataset.manualPoints || '';
                 inputs[2].value = category.dataset.manualTotal || '';
@@ -223,7 +245,7 @@ function calculateFinalPercentage(gradeCategories) {
         }
     }
     if (totalWeight === 0) {
-        return null; 
+        return null;
     }
 
     return (weightedScore / totalWeight) * 100;
@@ -258,7 +280,6 @@ function getDesiredPercent() {
 function calculateNeededScore(categoryDiv, T) {
     const desiredPercent = getDesiredPercent();
     if (!desiredPercent || T === 0) return null;
-    // get current gradeCategories
     const categoryElements = document.querySelectorAll('.category');
     let current_weighted = 0;
     let total_weight = 0;
@@ -309,4 +330,97 @@ function updateNeededScores() {
             }
         });
     });
+}
+
+//https://chatgpt.com/s/t_69ea787abf288191b25688fe53e9ed33
+//I used ai to implement the import from aeries button because it is advanced parsing
+function importAeriesCategories(rawText) {
+    const parsedCategories = parseAeriesTotals(rawText);
+
+    if (parsedCategories.length === 0) {
+        alert('Could not find any valid categories in that Aeries table.');
+        return;
+    }
+
+    // remove all current categories
+    document.querySelectorAll('.category').forEach(category => category.remove());
+
+    // rebuild categories from imported data
+    parsedCategories.forEach(categoryData => {
+        const categoryDiv = buildCategory();
+        const inputs = categoryDiv.querySelectorAll('input');
+
+        // inputs:
+        // 0 = category name
+        // 1 = your points
+        // 2 = total points
+        // 3 = weight
+        inputs[0].value = categoryData.name;
+        inputs[1].value = categoryData.points;
+        inputs[2].value = categoryData.total;
+        inputs[3].value = categoryData.weight + '%';
+
+        tableDiv.appendChild(categoryDiv);
+    });
+
+    updateGradeData();
+}
+
+function parseAeriesTotals(rawText) {
+    const lines = rawText
+        .split(/\r?\n/)
+        .map(line => line.trim())
+        .filter(line => line !== '');
+
+    const categories = [];
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // skip obvious non-category rows
+        if (
+            /^totals?$/i.test(line) ||
+            /^category\s+/i.test(line) ||
+            /^perc of/i.test(line) ||
+            /^grade\s+/i.test(line) ||
+            /^points\s+/i.test(line) ||
+            /^max\s+/i.test(line) ||
+            /^perc\s*/i.test(line) ||
+            /^mark\s*/i.test(line) ||
+            /^total\b/i.test(line)
+        ) {
+            continue;
+        }
+
+        const parsed = parseAeriesCategoryLine(line);
+        if (parsed) {
+            categories.push(parsed);
+        }
+    }
+
+    return categories;
+}
+
+function parseAeriesCategoryLine(line) {
+    // Works for pasted rows like:
+    // Projects/Tests	60.00%	0.00	0	0.00%
+    // or with spaces instead of tabs
+
+    const match = line.match(/^(.*?)\s+(\d+(?:\.\d+)?)%\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)%/);
+
+    if (!match) return null;
+
+    const name = match[1].trim();
+    const weight = parseFloat(match[2]);
+    const points = parseFloat(match[3]);
+    const total = parseFloat(match[4]);
+
+    if (!name) return null;
+
+    return {
+        name,
+        weight,
+        points,
+        total
+    };
 }

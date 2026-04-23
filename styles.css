@@ -273,8 +273,7 @@ p {
     gap: 10px;
 }
 
-/* Modal styles */
-.modal {
+.popup {
     display: none;
     position: fixed;
     z-index: 1;
@@ -286,7 +285,7 @@ p {
     background-color: rgba(0,0,0,0.4);
 }
 
-.modal-content {
+.popup-content {
     background-color: #07120d;
     margin: 15% auto;
     padding: 20px;
@@ -297,7 +296,7 @@ p {
     color: #e9fbef;
 }
 
-.close {
+.popup-close {
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -305,17 +304,17 @@ p {
     cursor: pointer;
 }
 
-.close:hover,
-.close:focus {
+.popup-close:hover,
+.popup-close:focus {
     color: #fff;
     text-decoration: none;
 }
 
-.modal-content h2 {
+.popup-content h2 {
     margin-top: 0;
 }
 
-.modal-content input {
+.popup-content input {
     display: block;
     margin: 10px 0;
     width: 100%;
@@ -326,6 +325,6 @@ p {
     outline: none;
 }
 
-.modal-content button {
+.popup-content button {
     margin-top: 10px;
 }
