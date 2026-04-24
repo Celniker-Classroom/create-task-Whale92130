@@ -244,7 +244,6 @@ function calculateFinalPercentage(gradeCategories) {
             weightedScore += categoryPercent * currentCategory.weight;
             totalWeight += currentCategory.weight;
         } else if (currentCategory.total === 0 && currentCategory.points > 0 && currentCategory.weight > 0) {
-            // Handle extra credit: treat as bonus points
             extraCreditPoints += currentCategory.points;
         }
     }
@@ -253,7 +252,6 @@ function calculateFinalPercentage(gradeCategories) {
     }
 
     const baseGrade = (weightedScore / totalWeight) * 100;
-    // Add extra credit as bonus percentage points
     return baseGrade + extraCreditPoints;
 }
 
