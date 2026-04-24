@@ -231,6 +231,7 @@ function updateGradeData() {
         totalPercentageDisplay.style.color = gradeInfo.color;
         totalLetterDisplay.style.color = gradeInfo.color;
     }
+    updateNeededScores();
 }
 
 function calculateFinalPercentage(gradeCategories) {
