@@ -236,19 +236,25 @@ function updateGradeData() {
 function calculateFinalPercentage(gradeCategories) {
     let totalWeight = 0;
     let weightedScore = 0;
+    let extraCreditPoints = 0;
     for (let i = 0; i < gradeCategories.length; i++) {
         let currentCategory = gradeCategories[i];
         if (currentCategory.total > 0 && currentCategory.weight > 0) {
             const categoryPercent = currentCategory.points / currentCategory.total;
             weightedScore += categoryPercent * currentCategory.weight;
             totalWeight += currentCategory.weight;
+        } else if (currentCategory.total === 0 && currentCategory.points > 0 && currentCategory.weight > 0) {
+            // Handle extra credit: treat as bonus points
+            extraCreditPoints += currentCategory.points;
         }
     }
     if (totalWeight === 0) {
         return null;
     }
 
-    return (weightedScore / totalWeight) * 100;
+    const baseGrade = (weightedScore / totalWeight) * 100;
+    // Add extra credit as bonus percentage points
+    return baseGrade + extraCreditPoints;
 }
 
 function getLetterGrade(percent) {
